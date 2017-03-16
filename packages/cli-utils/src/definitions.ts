@@ -64,7 +64,7 @@ export interface IProject extends IConfig<ProjectFile> {
   loadAppId(): Promise<string>;
 }
 
-export type CommandLineInput = string | boolean | null | undefined;
+export type CommandLineInput = string | boolean | null | undefined | string[];
 export type CommandLineInputs = string[];
 export type CommandLineOptions = { [arg: string]: CommandLineInput };
 export type CommandOptionType = StringConstructor | BooleanConstructor;
@@ -257,7 +257,7 @@ export interface ICommand {
   load(): Promise<void>;
   unload(): Promise<void>;
   prerun(inputs: CommandLineInputs, options: CommandLineOptions): Promise<void | number>;
-  run(inputs: CommandLineInputs, options: CommandLineOptions, validationErrors: ValidationError[]): Promise<void | number>;
+  run(inputs: CommandLineInputs, options: CommandLineOptions): Promise<void | number>;
   execute(inputs?: CommandLineInputs): Promise<void>;
 }
 

@@ -49,11 +49,24 @@ export function normalizeOptionAliases(metadata: CommandData, options: CommandLi
 
 export function minimistOptionsToArray(options: CommandLineOptions): string[] {
   return (Object.keys(options || {})).reduce((results, optionName): string[] => {
-    if (options[optionName] === true) {
+    const daObject = options[optionName];
+
+    if (optionName === '_' || !daObject) {
+      return results;
+    }
+
+    if (daObject === true) {
       return results.concat(`--${optionName}`);
     }
-    if (typeof options[optionName] === 'string') {
-      return results.concat(`--${optionName}=${options[optionName]}`);
+    if (typeof daObject === 'string') {
+      return results.concat(`--${optionName}=${daObject}`);
+    }
+    if (Array.isArray(daObject)) {
+      return results.concat(
+        daObject.map((value: string) => (
+          `--${optionName}=${value}`
+        ))
+      );
     }
     return results;
   }, <string[]>[]);
@@ -137,7 +150,7 @@ export function validateInputs(argv: string[], metadata: CommandData) {
   for (let i in metadata.inputs) {
     const input = metadata.inputs[i];
     const skip = new Set<Validator>();
-    const errors = [];
+    const errors: ValidationError[] = [];
 
     if (input.prompt) {
       skip.add(validators.required);
@@ -156,13 +169,14 @@ export function validateInputs(argv: string[], metadata: CommandData) {
           let r = validator(argv[i], input.name);
 
           if (r !== true) {
-            errors.push(<ValidationError>{
+            errors.push({
               message: r.toString(),
               inputName: input.name
             });
           }
         }
       }
+
       if (errors.length > 0) {
         throw errors;
       }
