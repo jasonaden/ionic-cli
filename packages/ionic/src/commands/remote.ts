@@ -64,7 +64,7 @@ export class RemoteCommand extends Command {
     options['nobrowser'] = true;
 
     var tasks = new TaskChain();
-    var response = await this.env.emitEvent('serve', {
+    var response = await this.env.emitEvent('device-view', {
       metadata: this.metadata,
       inputs,
       options
@@ -73,7 +73,7 @@ export class RemoteCommand extends Command {
     tasks.next(`Starting server`);
 
     if (options.qrcode) {
-      const codeString = await generateQrCode(`http://${response.publicIp}:${response.httpPort}`);
+      const codeString = await generateQrCode(`ws://${response.publicIp}:${response.wsPort}`);
       this.env.log.msg(`\n\n\n${codeString}`);
 
     } else {
