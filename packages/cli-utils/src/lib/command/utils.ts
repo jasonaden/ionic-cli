@@ -56,10 +56,10 @@ export function minimistOptionsToArray(options: CommandLineOptions): string[] {
     }
 
     if (daObject === true) {
-      return results.concat(`--${optionName}`);
+      return [...results, `--${optionName}`];
     }
     if (typeof daObject === 'string') {
-      return results.concat(`--${optionName}=${daObject}`);
+      return [...results, `--${optionName}=${daObject}`];
     }
     if (Array.isArray(daObject)) {
       return results.concat(

@@ -29,7 +29,7 @@ export default async function(cmdMetadata: CommandData, inputs: CommandLineInput
   }
 
   let appScriptsArgs = minimistOptionsToArray(options);
-  process.argv = ['node', 'appscripts'].concat(appScriptsArgs);
+  process.argv = ['node', 'appscripts', ...appScriptsArgs];
 
   const appScripts = require('@ionic/app-scripts');
   const context = appScripts.generateContext();

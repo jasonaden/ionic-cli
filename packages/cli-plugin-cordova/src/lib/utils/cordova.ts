@@ -30,7 +30,7 @@ export function filterArgumentsForCordova(metadata: CommandData, inputs: Command
   const results = filterByIntent(metadata, options, CORDOVA_INTENT);
   const args = minimistOptionsToArray(results);
 
-  return [metadata.name].concat(inputs, args);
+  return [metadata.name, ...inputs, ...args];
 }
 
 
@@ -40,7 +40,7 @@ export function filterArgumentsForCordova(metadata: CommandData, inputs: Command
 export function gatherArgumentsForCordova(metadata: CommandData, inputs: CommandLineInputs, options: CommandLineOptions): string[] {
   const args = minimistOptionsToArray(options);
 
-  return [metadata.name].concat(inputs, args);
+  return [metadata.name, ...inputs, ...args];
 }
 
 /**
